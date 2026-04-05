@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مكتب الصرفندي لخدمات المحكمة</title>
+<style>
+/* ===========================
+   إعدادات عامة للصفحة
+=========================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===========================
+   العنوان الرئيسي
+=========================== */
+h1 {
+    font-size: 3.5em; /* حجم أكبر */
+    margin: 50px 0 30px 0;
+    color: #333;
+    text-shadow: 1px 1px 3px #aaa; /* ظل خفيف */
+}
+
+/* ===========================
+   الأزرار
+=========================== */
+button {
+    width: 300px;
+    padding: 22px;
+    margin: 15px;
+    font-size: 22px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.3); /* ظل */
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.whatsapp {
+    background-color: #25D366;
+    color: white;
+}
+
+.payment {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* ===========================
+   نافذة الدفع (Modal)
+=========================== */
+#paymentModal {
+    display: none; /* مخفية بالبداية */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* خلفية داكنة */
+}
+
+#paymentContent {
+    background-color: #fff;
+    margin: 12% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+/* ===========================
+   أزرار خيارات الدفع داخل الـ Modal
+=========================== */
+.paymentOption {
+    width: 85%;
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    color: white;
+}
+
+#visa { background-color: #4CAF50; }       /* أخضر */
+#paypal { background-color: #FF9900; }    /* برتقالي */
+#bank { background-color: #9C27B0; }      /* بنفسجي */
+#cod { background-color: #F44336; }       /* أحمر */
+
+/* ===========================
+   رسالة الدفع عند الاستلام
+=========================== */
+#codMessage {
+    display: none;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* ===========================
+   الفوتر
+=========================== */
+footer {
+    background-color: #007BFF;
+    color: white;
+    padding: 25px 0;
+    margin-top: 50px;
+    font-size: 16px;
+}
+
+footer p {
+    margin: 6px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===========================
+     العنوان الرئيسي
+=========================== -->
+<h1>مكتب الصرفندي لخدمات المحكمة</h1>
+
+<!-- ===========================
+     أزرار الاتصال والدفع
+=========================== -->
+<button class="whatsapp" onclick="openWhatsApp()">تواصل واتساب</button>
+<br>
+<button class="payment" onclick="showPayment()">الدفع</button>
+
+<!-- ===========================
+     نافذة الدفع (Modal)
+=========================== -->
+<div id="paymentModal">
+    <div id="paymentContent">
+        <h3>اختر طريقة الدفع:</h3>
+        <button id="visa" class="paymentOption" onclick="payOption('visa')">فيزا / كارد</button>
+        <button id="paypal" class="paymentOption" onclick="payOption('paypal')">PayPal</button>
+        <button id="bank" class="paymentOption" onclick="payOption('bank')">تحويل بنكي</button>
+        <button id="cod" class="paymentOption" onclick="payOption('cod')">الدفع عند الاستلام</button>
+        <div id="codMessage">نتمنى زيارتك قريبا لاستلام المعاملة</div>
+        <br>
+        <button onclick="closePayment()" style="margin-top:15px;padding:12px 25px;border-radius:8px;">إغلاق</button>
+    </div>
+</div>
+
+<!-- ===========================
+     الفوتر
+=========================== -->
+<footer>
+    <p>مكتب الصرفندي لخدمات المحكمة</p>
+    <p>رقم الجوال: 972000</p>
+    <p>العنوان: رام الله - البالوع</p>
+    <p>حقوق النشر &copy; 2026</p>
+</footer>
+
+<!-- ===========================
+     سكريبت الوظائف
+=========================== -->
+<script>
+// فتح واتساب
+function openWhatsApp() {
+    window.open("https://wa.me/970595808334", "_blank");
+}
+
+// عرض نافذة الدفع
+function showPayment() {
+    document.getElementById('paymentModal').style.display = 'block';
+    document.getElementById('codMessage').style.display = 'none'; // تخفي رسالة الدفع عند الاستلام بالبداية
+}
+
+// إغلاق نافذة الدفع
+function closePayment() {
+    document.getElementById('paymentModal').style.display = 'none';
+}
+
+// تنفيذ خيارات الدفع
+function payOption(option) {
+    if(option === 'cod') {
+        document.getElementById('codMessage').style.display = 'block';
+    } else if(option === 'visa') {
+        window.open('https://www.visa.com/', '_blank');
+    } else if(option === 'paypal') {
+        window.open('https://www.paypal.com/', '_blank');
+    } else if(option === 'bank') {
+        window.open('https://www.yourbank.com/', '_blank'); // استبدلي برابط التحويل البنكي الحقيقي إذا موجود
+    }
+}
+</script>
+
+</body>
+</html>
