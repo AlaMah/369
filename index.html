@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</title>
+<style>
+/* ===========================
+   إعدادات عامة للصفحة
+=========================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===========================
+   العنوان الرئيسي
+=========================== */
+h1 {
+    font-size: 3.5em; /* حجم أكبر */
+    margin: 50px 0 10px 0;
+    color: #333;
+    text-shadow: 1px 1px 3px #aaa;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+/* ===========================
+   الأزرار
+=========================== */
+button, input[type=submit] {
+    width: 300px;
+    padding: 20px;
+    margin: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+button:hover, input[type=submit]:hover {
+    transform: scale(1.05);
+}
+
+/* اللون الواحد لكل الدفع */
+.paymentOption, .payment {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* ===========================
+   نافذة الدفع (Modal)
+=========================== */
+#paymentModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+#paymentContent {
+    background-color: #fff;
+    margin: 12% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+/* رسالة الدفع عند الاستلام */
+#codMessage {
+    display: none;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* ===========================
+   الفوتر
+=========================== */
+footer {
+    background-color: #007BFF;
+    color: white;
+    padding: 25px 0;
+    margin-top: 50px;
+    font-size: 16px;
+}
+
+footer p {
+    margin: 6px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ===========================
+     العنوان الرئيسي
+=========================== -->
+<h1>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</h1>
+<h2>Translation for all languages</h2>
+
+<!-- ===========================
+     أزرار الاتصال والدفع
+=========================== -->
+<button class="whatsapp" onclick="openWhatsApp()">تواصل واتساب</button>
+<br>
+<button class="payment" onclick="showPayment()">الدفع</button>
+
+<!-- ===========================
+     نافذة الدفع (Modal)
+=========================== -->
+<div id="paymentModal">
+    <div id="paymentContent">
+        <h3>اختر طريقة الدفع</h3>
+
+        <!-- زر تحويل بنكي -->
+        <button class="paymentOption" onclick="bankPayment()">تحويل بنكي</button>
+
+        <!-- زر بايبال -->
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:inline-block;">
+            <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="business" value="your-paypal-email@example.com">
+            <input type="hidden" name="item_name" value="خدمات المحكمة">
+            <input type="hidden" name="amount" value="10.00">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="submit" class="paymentOption" value="PayPal">
+        </form>
+
+        <!-- الدفع عند الاستلام -->
+        <button class="paymentOption" onclick="codPayment()">الدفع عند الاستلام</button>
+
+        <div id="codMessage">نتمنى زيارتك قريبا لاستلام المعاملة</div>
+
+        <br>
+        <button onclick="closePayment()" style="margin-top:15px;padding:12px 25px;border-radius:8px;">إغلاق</button>
+    </div>
+</div>
+
+<!-- ===========================
+     الفوتر
+=========================== -->
+<footer>
+    <p>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</p>
+    <p>هاتف: 970595808334</p>
+    <p>العنوان: رام الله - البالوع - مجمع المحاكم - مكتب الصرفندي للخدمات العامة</p>
+    <p>حقوق النشر: sarafandi@2026</p>
+</footer>
+
+<!-- ===========================
+     سكريبت الوظائف
+=========================== -->
+<script>
+// فتح واتساب
+function openWhatsApp() {
+    window.open("https://wa.me/970595808334", "_blank");
+}
+
+// عرض نافذة الدفع
+function showPayment() {
+    document.getElementById('paymentModal').style.display = 'block';
+    document.getElementById('codMessage').style.display = 'none';
+}
+
+// إغلاق نافذة الدفع
+function closePayment() {
+    document.getElementById('paymentModal').style.display = 'none';
+}
+
+// الدفع عند الاستلام
+function codPayment() {
+    document.getElementById('codMessage').style.display = 'block';
+}
+
+// تحويل بنكي
+function bankPayment() {
+    alert("لتحويل المبلغ، يرجى استخدام حساب البنك التالي:\nرقم الحساب: 123-456-789\nالمبلغ: حسب الخدمات المختارة");
+}
+</script>
+
+</body>
+</html>
