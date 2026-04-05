@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</title>
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* توزيع الصفحة */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* المحتوى بالنص */
+.mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* عمودي */
+    align-items: center;     /* أفقي */
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+h2 {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+button, input[type=submit], select, input[type=text], input[type=number] {
+    font-size: 18px;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    width: 260px;
+}
+
+button:hover, input[type=submit]:hover {
+    transform: scale(1.05);
+}
+
+.paymentOption, .payment {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* نجمة */
+.requiredStar::after {
+    content: " *";
+    color: red;
+}
+
+/* الفوتر */
+footer {
+    background-color: #007BFF;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* مودال */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 70vh;
+    overflow-y: auto;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="mainContent">
+    <h1>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</h1>
+    <h2>خدمة الترجمة لجميع اللغات</h2>
+
+    <button onclick="openWhatsApp()">تواصل واتساب</button>
+    <button class="payment" onclick="showPayment()">الدفع</button>
+</div>
+
+<!-- نافذة الدفع -->
+<div id="paymentModal" class="modal">
+    <div class="modalContent">
+        <h3>اختر طريقة الدفع:</h3>
+        <button class="paymentOption" onclick="showBankModal()">تحويل من بنك</button>
+
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+            <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="business" value="your-paypal-email@example.com">
+            <input type="hidden" name="item_name" value="خدمات المحكمة">
+            <input type="hidden" name="amount" value="10.00">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="submit" class="paymentOption" value="PayPal">
+        </form>
+
+        <button class="paymentOption" onclick="showCodModal()">الدفع عند الاستلام</button>
+        <br>
+        <button onclick="closePayment()">إغلاق</button>
+    </div>
+</div>
+
+<!-- عند الاستلام -->
+<div id="codModal" class="modal">
+    <div class="modalContent">
+        <p>نتمنى زيارتك قريبا لاستلام المعاملة، شكرا لثقتكم بنا</p>
+        <button onclick="closeCodModal()">إغلاق</button>
+    </div>
+</div>
+
+<!-- البنك -->
+<div id="bankModal" class="modal">
+    <div class="modalContent">
+        <h3>تحويل بنكي</h3>
+
+        <label class="requiredStar">البنك:</label><br>
+        <select id="bankSelect">
+            <option value="">اختر البنك</option>
+            <option>بنك فلسطين</option>
+            <option>البنك العربي</option>
+        </select><br>
+
+        <label class="requiredStar">المبلغ:</label><br>
+        <input type="number" id="amountInput"><br>
+
+        <label class="requiredStar">العملة:</label><br>
+        <select id="currencyInput">
+            <option value="">اختر العملة</option>
+            <option>شيكل</option>
+            <option>دولار</option>
+        </select><br>
+
+        <label class="requiredStar">رقم الحساب:</label><br>
+        <input type="text" id="accountInput"><br>
+
+        <label class="requiredStar">رقم الآيبان:</label><br>
+        <input type="text" id="ibanInput"><br>
+
+        <button onclick="submitBank()" class="paymentOption">إرسال</button><br><br>
+        <button onclick="closeBankModal()">إغلاق</button>
+    </div>
+</div>
+
+<footer>
+    <p>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</p>
+    <p>هاتف: 970595808334</p>
+    <p>العنوان: رام الله - البالوع</p>
+</footer>
+
+<script>
+function openWhatsApp() {
+    window.open("https://wa.me/970595808334", "_blank");
+}
+
+function showPayment() {
+    document.getElementById('paymentModal').style.display = 'flex';
+}
+function closePayment() {
+    document.getElementById('paymentModal').style.display = 'none';
+}
+
+function showCodModal() {
+    document.getElementById('codModal').style.display = 'flex';
+}
+function closeCodModal() {
+    document.getElementById('codModal').style.display = 'none';
+}
+
+function showBankModal() {
+    closePayment();
+    document.getElementById('bankModal').style.display = 'flex';
+}
+function closeBankModal() {
+    document.getElementById('bankModal').style.display = 'none';
+}
+
+function submitBank() {
+    let bank = document.getElementById('bankSelect').value;
+    let amount = document.getElementById('amountInput').value;
+    let currency = document.getElementById('currencyInput').value;
+    let account = document.getElementById('accountInput').value;
+    let iban = document.getElementById('ibanInput').value;
+
+    if(!bank || !amount || !currency || !account || !iban){
+        alert("الرجاء تعبئة جميع الحقول المطلوبة!");
+        return;
+    }
+
+    alert("شكرا لثقتكم بنا");
+    closeBankModal();
+}
+</script>
+
+</body>
+</html>
