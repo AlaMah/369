@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</title>
+<style>
+/* ===========================
+   إعدادات عامة للصفحة
+=========================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===========================
+   العنوان الرئيسي
+=========================== */
+h1 {
+    font-size: 3.5em;
+    margin: 50px 0 10px 0;
+    color: #333;
+    text-shadow: 1px 1px 3px #aaa;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+/* ===========================
+   الأزرار
+=========================== */
+button, input[type=submit] {
+    width: 300px;
+    padding: 20px;
+    margin: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+button:hover, input[type=submit]:hover {
+    transform: scale(1.05);
+}
+
+/* اللون الواحد لكل الدفع */
+.paymentOption, .payment {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* ===========================
+   نافذة الدفع (Modal)
+=========================== */
+#paymentModal, #codModal, #bankModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modalContent {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+/* ===========================
+   الفوتر
+=========================== */
+footer {
+    background-color: #007BFF;
+    color: white;
+    padding: 40px 0;
+    font-size: 16px;
+}
+
+footer p {
+    margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ===========================
+     العنوان الرئيسي
+=========================== -->
+<h1>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</h1>
+<h2>خدمة الترجمة لجميع اللغات</h2>
+
+<!-- ===========================
+     أزرار الاتصال والدفع
+=========================== -->
+<button class="whatsapp" onclick="openWhatsApp()">تواصل واتساب</button>
+<br>
+<button class="payment" onclick="showPayment()">الدفع</button>
+
+<!-- ===========================
+     نافذة الدفع الرئيسية
+=========================== -->
+<div id="paymentModal" class="modal">
+    <div class="modalContent">
+        <h3>اختر طريقة الدفع</h3>
+        <button class="paymentOption" onclick="showBankModal()">تحويل بنكي</button>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:inline-block;">
+            <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="business" value="your-paypal-email@example.com">
+            <input type="hidden" name="item_name" value="خدمات المحكمة">
+            <input type="hidden" name="amount" value="10.00">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="submit" class="paymentOption" value="PayPal">
+        </form>
+        <button class="paymentOption" onclick="showCodModal()">الدفع عند الاستلام</button>
+        <br>
+        <button onclick="closePayment()" style="margin-top:15px;padding:12px 25px;border-radius:8px;">إغلاق</button>
+    </div>
+</div>
+
+<!-- ===========================
+     نافذة الدفع عند الاستلام
+=========================== -->
+<div id="codModal" class="modal">
+    <div class="modalContent">
+        <p>نتمنى زيارتك قريبا لاستلام المعاملة، شكرا لثقتكم بنا</p>
+        <button onclick="closeCodModal()">إغلاق</button>
+    </div>
+</div>
+
+<!-- ===========================
+     نافذة التحويل البنكي
+=========================== -->
+<div id="bankModal" class="modal">
+    <div class="modalContent">
+        <h3>اختيار البنك</h3>
+        <select id="bankSelect" style="width:80%; padding:10px; margin:10px 0;">
+            <option>بنك فلسطين</option>
+            <option>البنك العربي</option>
+            <option>بنك القاهرة عمان</option>
+            <option>بنك الأردن</option>
+            <option>البنك الوطني</option>
+            <option>بنك الاستثمار الفلسطيني</option>
+            <option>مصرف الصفا</option>
+        </select>
+        <br>
+        <input type="text" id="amountInput" placeholder="المبلغ" style="width:80%; padding:10px; margin:10px 0;">
+        <br>
+        <input type="text" id="currencyInput" placeholder="العملة" style="width:80%; padding:10px; margin:10px 0;">
+        <br>
+        <input type="text" id="accountInput" placeholder="رقم الحساب" style="width:80%; padding:10px; margin:10px 0;">
+        <br>
+        <input type="text" id="ibanInput" placeholder="رقم الايبان" style="width:80%; padding:10px; margin:10px 0;">
+        <br>
+        <button onclick="submitBank()" class="paymentOption">إرسال</button>
+        <br><br>
+        <button onclick="closeBankModal()" style="padding:12px 25px;border-radius:8px;">إغلاق</button>
+    </div>
+</div>
+
+<!-- ===========================
+     الفوتر
+=========================== -->
+<footer>
+    <p>مكتب الصرفندي للخدمات العامة ومعاملات المحكمة</p>
+    <p>هاتف: 970595808334</p>
+    <p>العنوان: رام الله - البالوع - مجمع المحاكم - مكتب الصرفندي للخدمات العامة</p>
+    <p>حقوق النشر: sarafandi@2026</p>
+</footer>
+
+<script>
+// فتح واتساب
+function openWhatsApp() {
+    window.open("https://wa.me/970595808334", "_blank");
+}
+
+// عرض نافذة الدفع
+function showPayment() { document.getElementById('paymentModal').style.display = 'block'; }
+function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
+
+// الدفع عند الاستلام
+function showCodModal() {
+    document.getElementById('codModal').style.display = 'block';
+}
+function closeCodModal() { document.getElementById('codModal').style.display = 'none'; }
+
+// التحويل البنكي
+function showBankModal() { document.getElementById('bankModal').style.display = 'block'; }
+function closeBankModal() { document.getElementById('bankModal').style.display = 'none'; }
+
+// إرسال بيانات التحويل البنكي (مثال)
+function submitBank() {
+    let bank = document.getElementById('bankSelect').value;
+    let amount = document.getElementById('amountInput').value;
+    let currency = document.getElementById('currencyInput').value;
+    let account = document.getElementById('accountInput').value;
+    let iban = document.getElementById('ibanInput').value;
+    alert(`تم إرسال البيانات:\nالبنك: ${bank}\nالمبلغ: ${amount} ${currency}\nرقم الحساب: ${account}\nرقم الايبان: ${iban}\nسيتم الاتصال بك لتأكيد الدفع.`);
+    closeBankModal();
+}
+</script>
+</body>
+</html>
